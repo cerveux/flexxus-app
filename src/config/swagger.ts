@@ -40,10 +40,10 @@ const swaggerUiOptions = {
   },
 };
 
-const swaggerDocs = ( app: Application, port: number ) => {
+const swaggerDocs = ( app: Application ) => {
   app.use( "/docs", swaggerUi.serve, swaggerUi.setup( swaggerSpec, swaggerUiOptions ) );
 
-  console.info( `📄 Swagger Docs available at http://localhost:${port}/docs` );
+  console.info( `📄 Swagger Docs available at http://localhost:${config.port}/docs` );
 };
 
 export default swaggerDocs;

@@ -1,0 +1,184 @@
+openapi: '3.0.0'
+info:
+  title: User API
+  version: 1.0.0
+  description: API for user management
+
+paths:
+
+  /user:
+    post:
+      summary: Create a new user
+      description: Registers a new user in the system.
+      tags:
+        - User
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - username
+                - lastname
+                - password
+              properties:
+                name:
+                  type: string
+                  minLength: 3
+                  maxLength: 15
+                  description: User's first name (Only letters, capitalized)
+                  example: John
+                username:
+                  type: string
+                  minLength: 3
+                  maxLength: 15
+                  description: Unique username (Only letters)
+                  example: johndoe
+                lastname:
+                  type: string
+                  minLength: 3
+                  maxLength: 15
+                  description: User's last name (Only letters, capitalized)
+                  example: Doe
+                password:
+                  type: string
+                  minLength: 6
+                  maxLength: 6
+                  pattern: "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]+$"
+                  description: |
+                    The password must:
+                      - Have exactly 6 characters
+                      - Contain at least 1 lowercase letter
+                      - Contain at least 1 uppercase letter
+                      - Contain at least 1 number
+                      - Not contain spaces
+                  example: Abc123
+      responses:
+        "201":
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "New User registered successfully."
+        "400":
+          description: Bad request (Validation error or username already taken)
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                Required Fields:
+                  summary: This fields are required
+                  value:
+                    errors:
+                      -  
+                        type: "field"
+                        msg: "The name is required."
+                        path: "name"
+                        location: "body"
+                      -  
+                        type: "field"
+                        msg: "The username is required."
+                        path: "username"
+                        location: "body"
+                      -  
+                        type: "field"
+                        msg: "The last name is required."
+                        path: "lastname"
+                        location: "body"
+                      -  
+                        type: "field"
+                        msg: "The password is required."
+                        path: "password"
+                        location: "body"
+                commonValidations:
+                  summary: Common validations
+                  value:
+                    errors:
+                      -  
+                         type: field
+                         value: D1
+                         msg: Only letters are allowed
+                         path: username
+                         location: body
+                      -  
+                         type: field
+                         value: D1
+                         msg: The username length should be between 3 and 15 characters.
+                         path: username
+                         location: body
+                      -  
+                         type: field
+                         value: D1
+                         msg: Only letters are allowed
+                         path: name
+                         location: body
+                      -  
+                         type: field
+                         value: D1
+                         msg: The name's length should be between 3 and 15 characters.
+                         path: name
+                         location: body
+                      -  
+                         type: field
+                         value: G2
+                         msg: Only letters are allowed
+                         path: lastname
+                         location: body
+                      -  
+                         type: field
+                         value: G2
+                         msg: The lastname's length should be between 3 and 15 characters.
+                         path: lastname
+                         location: body
+                invalidPass:
+                  summary: Invalid Password
+                  value:
+                    errors:
+                      -  
+                         type: field
+                         msg: The password must have at least 1 lowercase.
+                         path: password
+                         location: body
+                         value: --- --
+                      -  
+                         type: field
+                         msg: The password must have at least 1 uppercase.
+                         path: password
+                         location: body
+                         value: --- --
+                      -  
+                         type: field
+                         msg: The password must have at least 1 number.
+                         path: password
+                         location: body
+                         value: --- --
+                      -  
+                         type: field
+                         msg: The password can't have an empty space.
+                         path: password
+                         location: body
+                         value: --- --
+                usernameTaken:
+                  summary: Username already taken
+                  value:
+                    error: "That username is already taken."
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Something went wrong."
+
