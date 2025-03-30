@@ -2,10 +2,12 @@ import express, { Application } from "express";
 import morgan from "morgan";
 import { UserRoute } from "./routes";
 import { errorHandler } from "./middlewares";
+import swaggerDocs from "./config/swagger";
 
 const app: Application = express();
 
 // Swagger documentation
+swaggerDocs( app );
 
 
 // Middlewares
