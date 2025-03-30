@@ -1,6 +1,7 @@
 import express, { Application } from "express";
 import morgan from "morgan";
-import {  } from "./routes";
+import { UserRoute } from "./routes";
+import { errorHandler } from "./middlewares";
 
 const app: Application = express();
 
@@ -14,8 +15,9 @@ app.use( morgan( "short" ) );
 
 
 // Routes
-
+app.use( "/api/user", UserRoute );
 app.all( "*", ( _req, res ) =>{ res.status( 404 ).json( { message: "This path doesn't exist." } );} );
+app.use( "*", errorHandler );
 
 
 export default app;

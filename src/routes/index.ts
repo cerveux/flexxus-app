@@ -1,3 +1,5 @@
+import UserRoute from "./user.routes";
 
-
-export {}
+export {
+  UserRoute
+};

@@ -1,5 +1,6 @@
 import { Sequelize } from "sequelize-typescript";
 import { config } from "./config";
+import { UserModel } from "../models";
 
 export const sequelize = new Sequelize(
   {
@@ -9,7 +10,7 @@ export const sequelize = new Sequelize(
     host: config.hostDatabase,
     dialect: "mysql",
     logging: false,
-    models: [__dirname + "/../models"],
+    models: [UserModel],
     pool: {
       max: 50,
       min: 5,
