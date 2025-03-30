@@ -1,0 +1,134 @@
+openapi: '3.0.0'
+info:
+  title: User API
+  version: 1.0.0
+  description: API for user management
+
+paths:
+
+  /auth/login:
+    post:
+      summary: User authentication
+      description: Authenticate a user and return a JWT token.
+      tags:
+        - Auth
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - username
+                - password
+              properties:
+                username:
+                  type: string
+                  minLength: 3
+                  maxLength: 15
+                  description: Registered username (Only letters)
+                  example: johndoe
+                password:
+                  type: string
+                  minLength: 6
+                  maxLength: 6
+                  pattern: "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]+$"
+                  description: |
+                    The password must:
+                      - Have exactly 6 characters
+                      - Contain at least 1 lowercase letter
+                      - Contain at least 1 uppercase letter
+                      - Contain at least 1 number
+                      - Not contain spaces
+                  example: Abc123
+      responses:
+        "200":
+          description: User authenticated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    type: object
+                    properties:
+                      username:
+                        type: string
+                        example: johndoe
+                      name:
+                        type: string
+                        example: John
+                      lastname:
+                        type: string
+                        example: Doe
+                  token:
+                    type: string
+                    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImNlcnZldXgiLCJpYXQiOjE3NDMxMzA4NTUsImV4cCI6MTc0MzIxNzI1NX0._j6iDeNmaazrbG_dPoX6uQ_nS3W2QATAQPWZN5MZVXM"
+                  message:
+                    type: string
+                    example: "Access granted."
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                Required Fields:
+                  summary: This fields are required
+                  value:
+                    errors:
+                      -  
+                        type: "field"
+                        msg: "The username is required."
+                        path: "username"
+                        location: "body"
+                      -  
+                        type: "field"
+                        msg: "The password is required."
+                        path: "password"
+                        location: "body"
+                commonValidations:
+                  summary: Common validations
+                  value:
+                    errors:
+                      -  
+                         type: field
+                         value: ce
+                         msg: The username's length should have a length between 3 and 15 characters.
+                         path: username
+                         location: body
+                      -  
+                         type: field
+                         value: 12
+                         msg: The password must be a string.
+                         path: password
+                         location: body
+        "401":
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Incorrect username or password"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Something went wrong."
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
