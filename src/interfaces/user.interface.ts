@@ -1,3 +1,4 @@
+import { Request } from "express";
 
 export interface UserAttributes {
   id?: number;
@@ -6,4 +7,8 @@ export interface UserAttributes {
   lastname: string;
   dni: string;
   password: string;
+}
+
+export interface UserRequest extends Request{
+  body: UserAttributes;
 }
