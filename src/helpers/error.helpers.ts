@@ -16,6 +16,7 @@ export const takeNameFn = ( errorStackTrace: string ): string => {
  */
 export const handleAndInsertError = async ( error: Error ) : Promise<void> => {
   try {
+    // La mejor forma de manerjar los errores sería insertandolos en la base de datos
     const nameFn: string = takeNameFn( error.stack! );
     const writer = fs.createWriteStream( "src/errors/errors.txt", {
       flags: "a",

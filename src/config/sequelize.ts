@@ -1,6 +1,6 @@
 import { Sequelize } from "sequelize-typescript";
 import { config } from "./config";
-import { UserModel } from "../models";
+import { ArticleModel, UserModel } from "../models";
 
 export const sequelize = new Sequelize(
   {
@@ -10,7 +10,7 @@ export const sequelize = new Sequelize(
     host: config.hostDatabase,
     dialect: "mysql",
     logging: false,
-    models: [UserModel],
+    models: [ArticleModel, UserModel],
     pool: {
       max: 50,
       min: 5,

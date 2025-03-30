@@ -30,9 +30,9 @@ class ArticleModel extends Model<ArticleAttributes> {
   @Column( {
     type: DataType.BOOLEAN,
     allowNull: false,
-    defaultValue: false
+    defaultValue: true
   } )
-  declare down: boolean;
+  declare active: boolean;
 }
 
 export default ArticleModel;
