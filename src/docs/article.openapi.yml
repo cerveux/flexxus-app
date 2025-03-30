@@ -234,6 +234,21 @@ paths:
                         msg: "The exact value must be true or false."
                         path: "active"
                         location: "query"
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                InvalidToken:
+                  summary: Invalid token
+                  value:
+                    message: "Invalid Token. Please login again."
+                NoToken:
+                  summary: No token provided
+                  value:
+                    message: "The JWT is required."
   /article/{id}:
     put:
       summary: Update an article by ID
@@ -393,16 +408,6 @@ paths:
                       -  
                         type: "field"
                         value: "a"
-                        msg: "The id value must be a number."
-                        path: "id"
-                        location: "params"
-                invalidId:
-                  summary: Invalid Id
-                  value:
-                    errors:
-                      -
-                        type: "field"
-                        value: "k"
                         msg: "The id value must be a number."
                         path: "id"
                         location: "params"

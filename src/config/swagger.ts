@@ -9,7 +9,7 @@ const options: swaggerJSDoc.Options = {
     info: {
       title: "Node backend Challenge",
       version: "1.0.0",
-      description: "Challenge for Mindfactory",
+      description: "Challenge for Flexxus",
     },
     components: {
       securitySchemes: {

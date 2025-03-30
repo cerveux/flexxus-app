@@ -18,7 +18,7 @@ export const createArticle = async ( article: ArticleAttributes ):Promise<Respon
     const newArticle = await ArticleModel.create( article );
     return {
       results: newArticle,
-      code: 200,
+      code: 201,
       message: "New article created succesfully",
     };
   } catch ( error ) {
@@ -78,6 +78,7 @@ async ( id: number, updatedValues : ArticleUpdateAttributes ): Promise<ResponseA
   } catch ( error ) {
     const err = error as SqlError;
     if ( err.parent?.sqlState == "23000" ) throw new CustomError( `${err.parent.sqlMessage}`, 403 );
+    if ( err instanceof CustomError ) throw new CustomError( `${err.message}`, 404 );
     throw new CustomError( `${err.message}`, 500 );
   }
 };
