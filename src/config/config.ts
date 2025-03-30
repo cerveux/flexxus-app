@@ -8,6 +8,7 @@ dotenv.config();
    nameDatabase: string | undefined;
    userDatabase: string | undefined;
    passwordDatabase: string | undefined;
+   secret: string | undefined;
  }
 
 
@@ -18,4 +19,5 @@ export const config: InterfaceConfig = {
   nameDatabase: process.env.NAME_DATABASE,
   userDatabase: process.env.USER_DATABASE,
   passwordDatabase: process.env.PASSWORD_DATABASE,
+  secret: process.env.SECRET
 };
