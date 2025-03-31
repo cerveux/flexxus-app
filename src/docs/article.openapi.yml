@@ -1,0 +1,445 @@
+openapi: '3.0.0'
+info:
+  title: Article API
+  version: 1.0.0
+  description: API for managing articles
+paths:
+  /article:
+    post:
+      summary: Create a new article
+      tags:
+        - Article
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - brand
+              properties:
+                name:
+                  type: string
+                  description: The name of the article
+                  example: "Tita"
+                brand:
+                  type: string
+                  description: The article's brand
+                  example: "Terrabusi"
+      responses:
+        '201':
+          description: Article created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                message: New article created succesfully
+                results: 
+                  active: true
+                  id: 1
+                  name: Tita
+                  brand: Terrabusi
+                  updatedAt: "2025-03-30T21:08:49.294Z"
+                  createdAt: "2025-03-30T21:08:49.294Z"
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                Required Fields:
+                  summary: This fields are required
+                  value:
+                    errors:
+                      -  
+                        type: "field"
+                        msg: "The name is required."
+                        path: "name"
+                        location: "body"
+                      -  
+                        type: "field"
+                        msg: "The brand is required."
+                        path: "brand"
+                        location: "body"
+                commonValidations:
+                  summary: Common validations
+                  value:
+                    errors:
+                      -
+                        type: "field"
+                        value: "************************************************************"
+                        msg: "One of the special characters entered is not allowed. \nOnly / - , . ( ) and : are allowed."
+                        path: "name"
+                        location: "body"
+                      -
+                        type: "field"
+                        value: "************************************************************"
+                        msg: "The brand must be between 1 and 50 characters."
+                        path: "name"
+                        location: "body"
+                      -
+                        type: "field"
+                        value: "************************************************************"
+                        msg: "One of the special characters entered is not allowed. \nOnly / - , . ( ) and : are allowed."
+                        path: "brand"
+                        location: "body"
+                      -
+                        type: "field"
+                        value: "************************************************************"
+                        msg: "The brand must be between 1 and 50 characters."
+                        path: "brand"
+                        location: "body"
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                InvalidToken:
+                  summary: Invalid token
+                  value:
+                    message: "Invalid Token. Please login again."
+                NoToken:
+                  summary: No token provided
+                  value:
+                    message: "The JWT is required."
+        '403':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                error: Duplicate entry 'tita-terrabusi' for key 'article.name-brand'
+                
+    get:
+      summary: Get all articles
+      tags:
+        - Article
+      parameters:
+        - name: page
+          in: query
+          description: Page number for pagination
+          required: false
+          schema:
+            type: integer
+            example: 1
+        - name: order
+          in: query
+          description: Order of the articles (ASC or DESC)
+          required: false
+          schema:
+            type: string
+            enum: [ASC, DESC]
+            example: ASC
+        - name: name
+          in: query
+          description: Search term for filtering articles
+          required: false
+          schema:
+            type: string
+            example: tita
+        - name: active
+          in: query
+          description: Active status
+          required: false
+          schema:
+            type: string
+            enum: [true, false]
+            example: false
+        - name: exact
+          in: query
+          description: Set true to exact name search
+          required: false
+          schema:
+            type: string
+            enum: [true, false]
+            example: true
+      responses:
+        '200':
+          description: List of articles
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  totalItems: 3
+                  totalPages: 1
+                  results:
+                    - 
+                      id: 1
+                      name: Tita
+                      brand: Terrabuzzi
+                      active: true
+                      createdAt: "2025-03-30T19:51:57.000Z"
+                      updatedAt: "2025-03-30T19:51:57.000Z"
+                    - 
+                      id: 2
+                      name: Bon o Bon
+                      brand: Arcor
+                      active: true
+                      createdAt: "2025-03-30T19:51:57.000Z"
+                      updatedAt: "2025-03-30T19:51:57.000Z"
+                    - 
+                      id: 3
+                      name: Oreo
+                      brand: Nabisco
+                      active: true
+                      createdAt: "2025-03-30T19:51:57.000Z"
+                      updatedAt: "2025-03-30T19:51:57.000Z"
+        '400':
+          description: Invalid parameters
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                Validation Error:
+                  summary: Format validation error
+                  value:
+                    errors:
+                      -  
+                        type: "field"
+                        value: "a"
+                        msg: "Page must be a number"
+                        path: "page"
+                        location: "query"
+                      -  
+                        type: "field"
+                        value: "ASX"
+                        msg: "No valid value was provided for the search, use ASC or DESC"
+                        path: "order"
+                        location: "query"
+                      -  
+                        type: "field"
+                        value: "un articulo"
+                        msg: "The name can have a maximum of 10 characters."
+                        path: "name"
+                        location: "query"
+                      -  
+                        type: "field"
+                        value: "verdadero"
+                        msg: "The exact value must be true or false."
+                        path: "exact"
+                        location: "query"
+                      -  
+                        type: "field"
+                        value: "falso"
+                        msg: "The exact value must be true or false."
+                        path: "active"
+                        location: "query"
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                InvalidToken:
+                  summary: Invalid token
+                  value:
+                    message: "Invalid Token. Please login again."
+                NoToken:
+                  summary: No token provided
+                  value:
+                    message: "The JWT is required."
+  /article/{id}:
+    put:
+      summary: Update an article by ID
+      tags:
+        - Article
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the article
+          schema:
+            type: integer
+            example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: The updated name of the article
+                  example: "Nueva Tita"
+                brand:
+                  type: string
+                  description: The updated brand of the article
+                  example: "Arcor"
+      responses:
+        '200':
+          description: Article updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Article updated successfully."
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                commonValidations:
+                  summary: Common validations
+                  value:
+                    errors:
+                      -
+                        type: "field"
+                        value: "************************************************************"
+                        msg: "One of the special characters entered is not allowed. \nOnly / - , . ( ) and : are allowed."
+                        path: "name"
+                        location: "body"
+                      -
+                        type: "field"
+                        value: "************************************************************"
+                        msg: "The brand must be between 1 and 50 characters."
+                        path: "name"
+                        location: "body"
+                      -
+                        type: "field"
+                        value: "************************************************************"
+                        msg: "One of the special characters entered is not allowed. \nOnly / - , . ( ) and : are allowed."
+                        path: "brand"
+                        location: "body"
+                      -
+                        type: "field"
+                        value: "************************************************************"
+                        msg: "The brand must be between 1 and 50 characters."
+                        path: "brand"
+                        location: "body"
+                invalidId:
+                  summary: Invalid Id
+                  value:
+                    errors:
+                      -
+                        type: "field"
+                        value: "k"
+                        msg: "The id value must be a number."
+                        path: "id"
+                        location: "params"
+                      
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                InvalidToken:
+                  summary: Invalid token
+                  value:
+                    message: "Invalid Token. Please login again."
+                NoToken:
+                  summary: No token provided
+                  value:
+                    message: "The JWT is required."
+        '403':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                error: Duplicate entry 'tita-terrabusi' for key 'article.name-brand'
+        '404':
+          description: Article not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "There is no Article registered with id 1980"
+    delete:
+      summary: Delete an article by ID
+      tags:
+        - Article
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the article
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: Article deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Article with id 1980 has been set as inactive successfully."
+        '400':
+          description: Invalid parameters
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                Id Error:
+                  summary: Id type validation
+                  value:
+                    errors:
+                      -  
+                        type: "field"
+                        value: "a"
+                        msg: "The id value must be a number."
+                        path: "id"
+                        location: "params"
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                InvalidToken:
+                  summary: Invalid token
+                  value:
+                    message: "Invalid Token. Please login again."
+                NoToken:
+                  summary: No token provided
+                  value:
+                    message: "The JWT is required."
+        '404':
+          description: Article not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "There is no Article registered with that id."
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
