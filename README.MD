@@ -89,11 +89,11 @@ Esta API REST desarrollada con Node.js, TypeScript y MySQL permite gestionar un 
 Las siguientes variables están configuradas en el docker-compose.yml:
 
 - `SECRET`: Secreto para JWT
-- `PORT`: Puerto de la aplicación (3000)
+- `PORT`: Puerto de la aplicación
 - `HOST_DATABASE`: Host de la base de datos (db)
-- `NAME_DATABASE`: Nombre de la base de datos (mindfactory)
-- `USER_DATABASE`: Usuario de la base de datos (mindfactory)
-- `PASSWORD_DATABASE`: Contraseña de la base de datos (mindfactory)
+- `NAME_DATABASE`: Nombre de la base de datos
+- `USER_DATABASE`: Usuario de la base de datos
+- `PASSWORD_DATABASE`: Contraseña de la base de datos 
 - `NODE_ENV`: Entorno de ejecución (production)
 
 
