@@ -48,6 +48,7 @@ Esta API REST desarrollada con Node.js, TypeScript y MySQL permite gestionar un 
    ```
    PORT=3000
    SECRET=tu_secreto_jwt
+   MYSQL_ROOT_PASSWORD=your_root_password
    HOST_DATABASE=localhost
    NAME_DATABASE=flexxus_develop
    USER_DATABASE=your_user
