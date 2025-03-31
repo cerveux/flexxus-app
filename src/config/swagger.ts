@@ -27,7 +27,7 @@ const options: swaggerJSDoc.Options = {
     ],
     servers: [{ url: `http://localhost:${config.port}/api` }],
   },
-  apis: ["./src/docs/*.openapi.yml"],
+  apis: ["./**/docs/*.openapi.yml"],
 };
 
 const swaggerSpec = swaggerJSDoc( options );
